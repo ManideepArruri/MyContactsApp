@@ -27,6 +27,29 @@ A Java console application demonstrating object-oriented design, design patterns
 - Exception handling for validation errors
 - Enhanced switch expressions
 
+---
+
+## UC-02: User Authentication
+
+**Actor:** Registered User
+
+**Description:** User logs in with credentials to access their contact list. Supports logout and session tracking.
+
+### OOP Concepts Used
+- **Polymorphism** — `AuthenticationStrategy` interface with concrete `BasicAuth` implementation
+- **Encapsulation** — Password comparison logic hidden inside `BasicAuth`
+- **Abstraction** — Authentication methods abstracted behind a common interface
+
+### Design Patterns
+- **Strategy Pattern** (`AuthenticationStrategy` → `BasicAuth`) — Swappable authentication algorithms
+- **Singleton Pattern** (`SessionManager`) — Single instance tracks the currently logged-in user
+
+### Java Concepts
+- `Optional<User>` for handling nullable login results
+- `MessageDigest` for password hash comparison
+- Singleton with lazy initialization
+- Session state management
+
 ### Package Structure
 ```
 src/com/mycontacts/
@@ -36,11 +59,16 @@ src/com/mycontacts/
 │   ├── FreeUser.java
 │   ├── PremiumUser.java
 │   └── UserRepository.java
-└── registration/
-    ├── UserBuilder.java
-    ├── UserFactory.java
-    ├── RegistrationService.java
-    └── RegistrationMenu.java
+├── registration/
+│   ├── UserBuilder.java
+│   ├── UserFactory.java
+│   ├── RegistrationService.java
+│   └── RegistrationMenu.java
+└── authentication/
+    ├── AuthenticationStrategy.java
+    ├── BasicAuth.java
+    ├── SessionManager.java
+    └── LoginMenu.java
 ```
 
 ### How to Run
@@ -51,11 +79,20 @@ java -cp out com.mycontacts.Main
 
 ### Sample Flow
 ```
-===== User Registration =====
-Enter your name: John Doe
+--- Main Menu ---
+1. Register
+2. Login
+0. Exit
+Choose an option: 2
+
+===== User Login =====
 Enter your email: john@example.com
-Enter password (min 6 chars): secret123
-Account type (free/premium): free
-Registration successful!
-Welcome, John Doe [Free account]
+Enter your password: secret123
+Login successful! Welcome back, John Doe
+
+--- Main Menu ---
+1. Register
+2. Login
+3. Logout (John Doe)
+0. Exit
 ```

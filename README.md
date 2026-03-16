@@ -36,12 +36,18 @@ A Java console application demonstrating object-oriented design, design patterns
 
 ## UC-09: Search Contacts
 - **Patterns:** Specification (`Specification<T>` → `NameSpecification`, `PhoneSpecification`, `EmailSpecification`, `ContactTypeSpecification`)
-- **Concepts:** Composable search criteria with AND/OR/NOT, Stream filtering, case-insensitive matching
+- **Concepts:** Composable AND/OR/NOT criteria, Stream filtering
 
-### Specification Pattern Details
-- `Specification<T>` — generic interface with `isSatisfiedBy()`, default `and()`, `or()`, `not()` methods
-- Concrete specs: `NameSpecification`, `PhoneSpecification`, `EmailSpecification`, `ContactTypeSpecification`
-- Combined searches: specs can be chained (e.g. `name.and(phone)`, `name.or(email)`)
+## UC-10: Advanced Filtering & Sorting
+- **Patterns:** Strategy (`FilterStrategy` → `DateAddedFilter`, `ContactTypeFilter`, `HasPhoneFilter`; `SortStrategy` → `SortByName`, `SortByDateAdded`, `SortByType`)
+- **Concepts:** Swappable filter/sort algorithms, combined filter+sort pipeline, Comparator, functional interfaces
+
+### Strategy Pattern Details
+- `FilterStrategy` — interface: `filter(List<Contact>) → List<Contact>`
+- `SortStrategy` — interface: `getComparator() → Comparator<Contact>`
+- Filters: by type, by date added, has phone number
+- Sorts: by name (A-Z), by date (newest first), by type
+- Combined: filter first, then sort
 
 ### Package Structure
 ```
@@ -56,7 +62,8 @@ src/com/mycontacts/
 ├── editcontact/     # UC-06: Command + Memento
 ├── deletecontact/   # UC-07: Observer, soft/hard delete
 ├── groups/          # UC-08: Composite pattern
-└── search/          # UC-09: Specification pattern
+├── search/          # UC-09: Specification pattern
+└── filtersort/      # UC-10: Strategy pattern
 ```
 
 ### How to Run

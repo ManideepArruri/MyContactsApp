@@ -40,14 +40,17 @@ A Java console application demonstrating object-oriented design, design patterns
 
 ## UC-10: Advanced Filtering & Sorting
 - **Patterns:** Strategy (`FilterStrategy` → `DateAddedFilter`, `ContactTypeFilter`, `HasPhoneFilter`; `SortStrategy` → `SortByName`, `SortByDateAdded`, `SortByType`)
-- **Concepts:** Swappable filter/sort algorithms, combined filter+sort pipeline, Comparator, functional interfaces
+- **Concepts:** Swappable algorithms, combined filter+sort pipeline
 
-### Strategy Pattern Details
-- `FilterStrategy` — interface: `filter(List<Contact>) → List<Contact>`
-- `SortStrategy` — interface: `getComparator() → Comparator<Contact>`
-- Filters: by type, by date added, has phone number
-- Sorts: by name (A-Z), by date (newest first), by type
-- Combined: filter first, then sort
+## UC-11: Create & Manage Tags
+- **Patterns:** Flyweight (`Tag`, `TagFactory`)
+- **Concepts:** Shared immutable instances, `computeIfAbsent` cache, `equals`/`hashCode`, `PredefinedTag` enum
+
+### Flyweight Pattern Details
+- `Tag` — immutable, final class with name-based equality
+- `PredefinedTag` — enum with 6 defaults (Family, Friend, Work, School, VIP, Favorite)
+- `TagFactory` — static flyweight cache; same name always returns same `Tag` instance
+- `TagMenu` — create custom tags, view all, delete custom, demo cache stats
 
 ### Package Structure
 ```
@@ -63,7 +66,8 @@ src/com/mycontacts/
 ├── deletecontact/   # UC-07: Observer, soft/hard delete
 ├── groups/          # UC-08: Composite pattern
 ├── search/          # UC-09: Specification pattern
-└── filtersort/      # UC-10: Strategy pattern
+├── filtersort/      # UC-10: Strategy pattern
+└── tags/            # UC-11: Flyweight pattern
 ```
 
 ### How to Run

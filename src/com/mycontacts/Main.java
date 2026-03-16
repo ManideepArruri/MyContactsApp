@@ -7,6 +7,7 @@ import com.mycontacts.common.UserRepository;
 import com.mycontacts.contact.CreateContactMenu;
 import com.mycontacts.deletecontact.DeleteContactMenu;
 import com.mycontacts.editcontact.EditContactMenu;
+import com.mycontacts.filtersort.FilterSortMenu;
 import com.mycontacts.groups.GroupMenu;
 import com.mycontacts.profile.ProfileMenu;
 import com.mycontacts.registration.RegistrationMenu;
@@ -42,7 +43,8 @@ public class Main {
                 System.out.println("7. Delete Contact");
                 System.out.println("8. Contact Groups");
                 System.out.println("9. Search Contacts");
-                System.out.println("10. Logout (" + session.getCurrentUser().getName() + ")");
+                System.out.println("10. Filter & Sort");
+                System.out.println("11. Logout (" + session.getCurrentUser().getName() + ")");
             }
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
@@ -119,6 +121,14 @@ public class Main {
                     yield true;
                 }
                 case "10" -> {
+                    if (session.isLoggedIn()) {
+                        new FilterSortMenu(contactRepository, scanner).show();
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    yield true;
+                }
+                case "11" -> {
                     if (session.isLoggedIn()) {
                         System.out.println("Logged out. Bye, " + session.getCurrentUser().getName() + "!");
                         session.logout();

@@ -17,31 +17,32 @@ A Java console application demonstrating object-oriented design, design patterns
 ## UC-04: Create Contact
 - **Patterns:** Builder (`ContactBuilder`), Factory (`ContactFactory`)
 - **OOP:** Inheritance (`Contact` → `Person`/`Organization`), Composition (`List<PhoneNumber>`, `List<Email>`)
-- **Concepts:** UUID, LocalDateTime, Collections, regex email validation, soft delete flag
 
 ## UC-05: View Contact Details
 - **Patterns:** Decorator (`DisplayDecorator` → `UpperCaseDecorator`, `MaskedEmailDecorator`)
-- **OOP:** Interface-based polymorphism, decorator chaining
-- **Concepts:** String manipulation, display formatting, composable decorators
+- **Concepts:** Decorator chaining, display formatting
 
-### Decorator Pattern Details
-- `ContactDisplay` — interface with `display(Contact)` method
-- `BaseContactDisplay` — default formatter using `toString()`
-- `DisplayDecorator` — abstract decorator wrapping another `ContactDisplay`
-- `UpperCaseDecorator` — uppercases the contact name
-- `MaskedEmailDecorator` — masks emails (e.g. `j***@gmail.com`)
-- Decorators can be **chained**: `MaskedEmail(UpperCase(Base))`
+## UC-06: Edit Contact
+- **Patterns:** Command (`EditCommand` → `EditNameCommand`, `EditPhoneCommand`, `EditEmailCommand`, `EditNotesCommand`), Memento (`ContactMemento`)
+- **OOP:** Undo/redo via dual stacks in `CommandHistory`, full state restore via Memento snapshot
+
+### Command + Memento Details
+- `EditCommand` — interface with `execute()`, `undo()`, `getDescription()`
+- `CommandHistory` — manages undo/redo stacks; new actions clear redo stack
+- `ContactMemento` — immutable snapshot of contact state (name, notes, phones, emails)
+- `EditContactMenu` — select a contact, edit fields, undo/redo individual changes, or restore entire original state via Memento
 
 ### Package Structure
 ```
 src/com/mycontacts/
 ├── Main.java
 ├── common/          # User, Contact models, repositories
-├── registration/    # UC-01: UserBuilder, UserFactory
-├── authentication/  # UC-02: Strategy, SessionManager
+├── registration/    # UC-01: Builder, Factory
+├── authentication/  # UC-02: Strategy, Singleton
 ├── profile/         # UC-03: Command pattern
 ├── contact/         # UC-04: ContactBuilder, ContactFactory
-└── viewcontact/     # UC-05: Decorator pattern
+├── viewcontact/     # UC-05: Decorator pattern
+└── editcontact/     # UC-06: Command + Memento
 ```
 
 ### How to Run

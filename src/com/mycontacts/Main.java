@@ -5,6 +5,7 @@ import com.mycontacts.authentication.SessionManager;
 import com.mycontacts.common.ContactRepository;
 import com.mycontacts.common.UserRepository;
 import com.mycontacts.contact.CreateContactMenu;
+import com.mycontacts.deletecontact.DeleteContactMenu;
 import com.mycontacts.editcontact.EditContactMenu;
 import com.mycontacts.profile.ProfileMenu;
 import com.mycontacts.registration.RegistrationMenu;
@@ -35,7 +36,8 @@ public class Main {
                 System.out.println("4. Create Contact");
                 System.out.println("5. View Contacts");
                 System.out.println("6. Edit Contact");
-                System.out.println("7. Logout (" + session.getCurrentUser().getName() + ")");
+                System.out.println("7. Delete Contact");
+                System.out.println("8. Logout (" + session.getCurrentUser().getName() + ")");
             }
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
@@ -88,6 +90,14 @@ public class Main {
                     yield true;
                 }
                 case "7" -> {
+                    if (session.isLoggedIn()) {
+                        new DeleteContactMenu(contactRepository, scanner).show();
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    yield true;
+                }
+                case "8" -> {
                     if (session.isLoggedIn()) {
                         System.out.println("Logged out. Bye, " + session.getCurrentUser().getName() + "!");
                         session.logout();

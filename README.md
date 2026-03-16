@@ -24,13 +24,17 @@ A Java console application demonstrating object-oriented design, design patterns
 
 ## UC-06: Edit Contact
 - **Patterns:** Command (`EditCommand` → `EditNameCommand`, `EditPhoneCommand`, `EditEmailCommand`, `EditNotesCommand`), Memento (`ContactMemento`)
-- **OOP:** Undo/redo via dual stacks in `CommandHistory`, full state restore via Memento snapshot
+- **Concepts:** Undo/redo via dual stacks, full state restore via Memento snapshot
 
-### Command + Memento Details
-- `EditCommand` — interface with `execute()`, `undo()`, `getDescription()`
-- `CommandHistory` — manages undo/redo stacks; new actions clear redo stack
-- `ContactMemento` — immutable snapshot of contact state (name, notes, phones, emails)
-- `EditContactMenu` — select a contact, edit fields, undo/redo individual changes, or restore entire original state via Memento
+## UC-07: Delete Contact
+- **Patterns:** Observer (`DeleteObserver` → `DeleteLogger`)
+- **Concepts:** Soft delete (mark as deleted, recoverable) vs Hard delete (permanent removal), confirmation dialog, restore capability
+
+### Observer Pattern Details
+- `DeleteObserver` — interface notified on contact deletion with delete type
+- `DeleteLogger` — concrete observer logging deletion events
+- `DeleteService` — manages soft/hard delete and restore, notifies all observers
+- `DeleteContactMenu` — UI with soft delete, hard delete, restore, and view deleted options
 
 ### Package Structure
 ```
@@ -42,7 +46,8 @@ src/com/mycontacts/
 ├── profile/         # UC-03: Command pattern
 ├── contact/         # UC-04: ContactBuilder, ContactFactory
 ├── viewcontact/     # UC-05: Decorator pattern
-└── editcontact/     # UC-06: Command + Memento
+├── editcontact/     # UC-06: Command + Memento
+└── deletecontact/   # UC-07: Observer, soft/hard delete
 ```
 
 ### How to Run

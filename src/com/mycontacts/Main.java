@@ -3,6 +3,7 @@ package com.mycontacts;
 import com.mycontacts.authentication.LoginMenu;
 import com.mycontacts.authentication.SessionManager;
 import com.mycontacts.common.UserRepository;
+import com.mycontacts.profile.ProfileMenu;
 import com.mycontacts.registration.RegistrationMenu;
 
 import java.util.Scanner;
@@ -25,7 +26,8 @@ public class Main {
             System.out.println("1. Register");
             System.out.println("2. Login");
             if (session.isLoggedIn()) {
-                System.out.println("3. Logout (" + session.getCurrentUser().getName() + ")");
+                System.out.println("3. My Profile");
+                System.out.println("4. Logout (" + session.getCurrentUser().getName() + ")");
             }
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
@@ -46,6 +48,14 @@ public class Main {
                     yield true;
                 }
                 case "3" -> {
+                    if (session.isLoggedIn()) {
+                        new ProfileMenu(scanner).show();
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    yield true;
+                }
+                case "4" -> {
                     if (session.isLoggedIn()) {
                         System.out.println("Logged out. Bye, " + session.getCurrentUser().getName() + "!");
                         session.logout();

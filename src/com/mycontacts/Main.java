@@ -1,5 +1,7 @@
 package com.mycontacts;
 
+import com.mycontacts.authentication.LoginMenu;
+import com.mycontacts.authentication.SessionManager;
 import com.mycontacts.common.UserRepository;
 import com.mycontacts.registration.RegistrationMenu;
 
@@ -17,8 +19,14 @@ public class Main {
 
         boolean running = true;
         while (running) {
+            SessionManager session = SessionManager.getInstance();
+
             System.out.println("\n--- Main Menu ---");
             System.out.println("1. Register");
+            System.out.println("2. Login");
+            if (session.isLoggedIn()) {
+                System.out.println("3. Logout (" + session.getCurrentUser().getName() + ")");
+            }
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -27,6 +35,23 @@ public class Main {
             running = switch (input) {
                 case "1" -> {
                     new RegistrationMenu(userRepository, scanner).show();
+                    yield true;
+                }
+                case "2" -> {
+                    if (session.isLoggedIn()) {
+                        System.out.println("Already logged in as " + session.getCurrentUser().getName());
+                    } else {
+                        new LoginMenu(userRepository, scanner).show();
+                    }
+                    yield true;
+                }
+                case "3" -> {
+                    if (session.isLoggedIn()) {
+                        System.out.println("Logged out. Bye, " + session.getCurrentUser().getName() + "!");
+                        session.logout();
+                    } else {
+                        System.out.println("Invalid option. Try again.");
+                    }
                     yield true;
                 }
                 case "0" -> {

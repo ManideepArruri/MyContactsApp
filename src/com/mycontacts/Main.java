@@ -2,7 +2,9 @@ package com.mycontacts;
 
 import com.mycontacts.authentication.LoginMenu;
 import com.mycontacts.authentication.SessionManager;
+import com.mycontacts.common.ContactRepository;
 import com.mycontacts.common.UserRepository;
+import com.mycontacts.contact.CreateContactMenu;
 import com.mycontacts.profile.ProfileMenu;
 import com.mycontacts.registration.RegistrationMenu;
 
@@ -13,6 +15,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         UserRepository userRepository = new UserRepository();
+        ContactRepository contactRepository = new ContactRepository();
 
         System.out.println("=============================");
         System.out.println("   Welcome to MyContacts App");
@@ -27,7 +30,8 @@ public class Main {
             System.out.println("2. Login");
             if (session.isLoggedIn()) {
                 System.out.println("3. My Profile");
-                System.out.println("4. Logout (" + session.getCurrentUser().getName() + ")");
+                System.out.println("4. Create Contact");
+                System.out.println("5. Logout (" + session.getCurrentUser().getName() + ")");
             }
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
@@ -56,6 +60,14 @@ public class Main {
                     yield true;
                 }
                 case "4" -> {
+                    if (session.isLoggedIn()) {
+                        new CreateContactMenu(contactRepository, scanner).show();
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    yield true;
+                }
+                case "5" -> {
                     if (session.isLoggedIn()) {
                         System.out.println("Logged out. Bye, " + session.getCurrentUser().getName() + "!");
                         session.logout();

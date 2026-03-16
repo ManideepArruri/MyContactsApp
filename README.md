@@ -8,12 +8,6 @@ A Java console application demonstrating object-oriented design, design patterns
 
 **Description:** User creates an account with email, password, and profile information. Supports two account types — Free and Premium.
 
-### OOP Concepts Used
-- **Encapsulation** — Private fields with getters/setters in `User` class
-- **Inheritance** — `FreeUser` and `PremiumUser` extend abstract `User`
-- **Abstraction** — Abstract `User` class with `getUserType()` method
-- **Polymorphism** — Factory returns different user subtypes via a common reference
-
 ### Design Patterns
 - **Builder Pattern** (`UserBuilder`) — Step-by-step user construction with input validation
 - **Factory Pattern** (`UserFactory`) — Creates the correct user subtype based on type string
@@ -21,11 +15,7 @@ A Java console application demonstrating object-oriented design, design patterns
 ### Java Concepts
 - `MessageDigest` (SHA-256) for password hashing
 - Regular expressions for email validation
-- `UUID` for unique user IDs
-- `Optional` for safe user lookups
-- `LocalDateTime` for timestamps
-- Exception handling for validation errors
-- Enhanced switch expressions
+- `UUID`, `Optional`, `LocalDateTime`, enhanced switch expressions
 
 ---
 
@@ -35,20 +25,12 @@ A Java console application demonstrating object-oriented design, design patterns
 
 **Description:** User logs in with credentials to access their contact list. Supports logout and session tracking.
 
-### OOP Concepts Used
-- **Polymorphism** — `AuthenticationStrategy` interface with concrete `BasicAuth` implementation
-- **Encapsulation** — Password comparison logic hidden inside `BasicAuth`
-- **Abstraction** — Authentication methods abstracted behind a common interface
-
 ### Design Patterns
 - **Strategy Pattern** (`AuthenticationStrategy` → `BasicAuth`) — Swappable authentication algorithms
 - **Singleton Pattern** (`SessionManager`) — Single instance tracks the currently logged-in user
 
 ### Java Concepts
-- `Optional<User>` for handling nullable login results
-- `MessageDigest` for password hash comparison
-- Singleton with lazy initialization
-- Session state management
+- `Optional<User>` for nullable login results, Singleton with lazy initialization
 
 ---
 
@@ -58,78 +40,66 @@ A Java console application demonstrating object-oriented design, design patterns
 
 **Description:** User views and updates profile information (name, email, password) with undo capability for all changes.
 
-### OOP Concepts Used
-- **Polymorphism** — `ProfileCommand` interface with multiple concrete implementations
-- **Encapsulation** — Each command stores old/new values internally for undo
-- **Abstraction** — Profile operations abstracted behind a uniform command interface
-
 ### Design Patterns
 - **Command Pattern** (`ProfileCommand` → `UpdateNameCommand`, `UpdateEmailCommand`, `ChangePasswordCommand`) — Encapsulates profile edits as objects with execute/undo
-- **Command History** (`ProfileCommandHistory`) — Tracks executed commands for undo support
 
 ### Java Concepts
-- Interface-based polymorphism
-- Password verification before change
-- Input validation (email regex, password length)
-- `List` as a command stack for history tracking
+- Interface-based polymorphism, command history tracking, password verification
+
+---
+
+## UC-04: Create Contact
+
+**Actor:** Logged-in User
+
+**Description:** User adds a new contact (Person or Organization) with multiple phone numbers, email addresses, and optional fields like nickname, industry, website, and notes.
+
+### OOP Concepts Used
+- **Inheritance** — `Contact` → `Person` / `Organization` hierarchy
+- **Composition** — `Contact` has `List<PhoneNumber>` and `List<Email>`
+- **Abstraction** — Abstract `Contact` class with `getContactType()` method
+- **Encapsulation** — Private fields, defensive copies on getters
+
+### Design Patterns
+- **Builder Pattern** (`ContactBuilder`) — Fluent builder for step-by-step contact construction
+- **Factory Pattern** (`ContactFactory`) — Creates `Person` or `Organization` using enhanced switch
+
+### Java Concepts
+- `UUID` for unique contact IDs
+- `LocalDateTime` for created/updated timestamps
+- `List<PhoneNumber>`, `List<Email>` — Collections for multi-valued fields
+- Regex validation on email addresses
+- Soft delete flag for future UC-07
+- Method references (`contact::addPhone`)
 
 ### Package Structure
 ```
 src/com/mycontacts/
 ├── Main.java
 ├── common/
-│   ├── User.java
-│   ├── FreeUser.java
-│   ├── PremiumUser.java
-│   └── UserRepository.java
+│   ├── User.java, FreeUser.java, PremiumUser.java
+│   ├── UserRepository.java
+│   ├── Contact.java, Person.java, Organization.java
+│   ├── PhoneNumber.java, Email.java
+│   └── ContactRepository.java
 ├── registration/
-│   ├── UserBuilder.java
-│   ├── UserFactory.java
-│   ├── RegistrationService.java
-│   └── RegistrationMenu.java
+│   ├── UserBuilder.java, UserFactory.java
+│   ├── RegistrationService.java, RegistrationMenu.java
 ├── authentication/
-│   ├── AuthenticationStrategy.java
-│   ├── BasicAuth.java
-│   ├── SessionManager.java
-│   └── LoginMenu.java
-└── profile/
-    ├── ProfileCommand.java
-    ├── UpdateNameCommand.java
-    ├── UpdateEmailCommand.java
-    ├── ChangePasswordCommand.java
-    ├── ProfileCommandHistory.java
-    └── ProfileMenu.java
+│   ├── AuthenticationStrategy.java, BasicAuth.java
+│   ├── SessionManager.java, LoginMenu.java
+├── profile/
+│   ├── ProfileCommand.java
+│   ├── UpdateNameCommand.java, UpdateEmailCommand.java
+│   ├── ChangePasswordCommand.java, ProfileCommandHistory.java
+│   └── ProfileMenu.java
+└── contact/
+    ├── ContactBuilder.java, ContactFactory.java
+    └── CreateContactMenu.java
 ```
 
 ### How to Run
 ```bash
 javac -d out -sourcepath src src/com/mycontacts/Main.java
 java -cp out com.mycontacts.Main
-```
-
-### Sample Flow
-```
---- Main Menu ---
-1. Register
-2. Login
-3. My Profile
-4. Logout (John Doe)
-0. Exit
-Choose an option: 3
-
-===== Profile Management =====
-Name:    John Doe
-Email:   john@example.com
-Type:    Free
-Joined:  2026-03-16
-------------------------------
-1. Update Name
-2. Update Email
-3. Change Password
-4. Undo Last Change
-5. View Change History
-0. Back to Main Menu
-Choose an option: 1
-Enter new name: Johnny
-Name updated to: Johnny
 ```

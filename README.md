@@ -50,6 +50,29 @@ A Java console application demonstrating object-oriented design, design patterns
 - Singleton with lazy initialization
 - Session state management
 
+---
+
+## UC-03: User Profile Management
+
+**Actor:** Logged-in User
+
+**Description:** User views and updates profile information (name, email, password) with undo capability for all changes.
+
+### OOP Concepts Used
+- **Polymorphism** — `ProfileCommand` interface with multiple concrete implementations
+- **Encapsulation** — Each command stores old/new values internally for undo
+- **Abstraction** — Profile operations abstracted behind a uniform command interface
+
+### Design Patterns
+- **Command Pattern** (`ProfileCommand` → `UpdateNameCommand`, `UpdateEmailCommand`, `ChangePasswordCommand`) — Encapsulates profile edits as objects with execute/undo
+- **Command History** (`ProfileCommandHistory`) — Tracks executed commands for undo support
+
+### Java Concepts
+- Interface-based polymorphism
+- Password verification before change
+- Input validation (email regex, password length)
+- `List` as a command stack for history tracking
+
 ### Package Structure
 ```
 src/com/mycontacts/
@@ -64,11 +87,18 @@ src/com/mycontacts/
 │   ├── UserFactory.java
 │   ├── RegistrationService.java
 │   └── RegistrationMenu.java
-└── authentication/
-    ├── AuthenticationStrategy.java
-    ├── BasicAuth.java
-    ├── SessionManager.java
-    └── LoginMenu.java
+├── authentication/
+│   ├── AuthenticationStrategy.java
+│   ├── BasicAuth.java
+│   ├── SessionManager.java
+│   └── LoginMenu.java
+└── profile/
+    ├── ProfileCommand.java
+    ├── UpdateNameCommand.java
+    ├── UpdateEmailCommand.java
+    ├── ChangePasswordCommand.java
+    ├── ProfileCommandHistory.java
+    └── ProfileMenu.java
 ```
 
 ### How to Run
@@ -82,17 +112,24 @@ java -cp out com.mycontacts.Main
 --- Main Menu ---
 1. Register
 2. Login
+3. My Profile
+4. Logout (John Doe)
 0. Exit
-Choose an option: 2
+Choose an option: 3
 
-===== User Login =====
-Enter your email: john@example.com
-Enter your password: secret123
-Login successful! Welcome back, John Doe
-
---- Main Menu ---
-1. Register
-2. Login
-3. Logout (John Doe)
-0. Exit
+===== Profile Management =====
+Name:    John Doe
+Email:   john@example.com
+Type:    Free
+Joined:  2026-03-16
+------------------------------
+1. Update Name
+2. Update Email
+3. Change Password
+4. Undo Last Change
+5. View Change History
+0. Back to Main Menu
+Choose an option: 1
+Enter new name: Johnny
+Name updated to: Johnny
 ```

@@ -24,22 +24,24 @@ A Java console application demonstrating object-oriented design, design patterns
 
 ## UC-06: Edit Contact
 - **Patterns:** Command + Memento (`EditCommand`, `ContactMemento`, `CommandHistory`)
-- **Concepts:** Undo/redo via dual stacks, full state restore via Memento snapshot
+- **Concepts:** Undo/redo via dual stacks, full state restore via Memento
 
 ## UC-07: Delete Contact
 - **Patterns:** Observer (`DeleteObserver` → `DeleteLogger`)
-- **Concepts:** Soft delete vs Hard delete, confirmation, restore capability
+- **Concepts:** Soft delete vs Hard delete, confirmation, restore
 
 ## UC-08: Bulk Operations / Contact Groups
 - **Patterns:** Composite (`ContactComponent` → `ContactLeaf`, `ContactGroup`)
-- **OOP:** Recursive tree structure, uniform treatment of individuals and groups
-- **Concepts:** Bulk soft-delete, sub-groups, recursive contact counting
+- **Concepts:** Recursive tree, bulk soft-delete, sub-groups
 
-### Composite Pattern Details
-- `ContactComponent` — interface with `display()`, `getContactCount()`
-- `ContactLeaf` — wraps a single `Contact`
-- `ContactGroup` — composite holding contacts and sub-groups recursively
-- `GroupMenu` — create groups, add/remove contacts, bulk delete, add sub-groups
+## UC-09: Search Contacts
+- **Patterns:** Specification (`Specification<T>` → `NameSpecification`, `PhoneSpecification`, `EmailSpecification`, `ContactTypeSpecification`)
+- **Concepts:** Composable search criteria with AND/OR/NOT, Stream filtering, case-insensitive matching
+
+### Specification Pattern Details
+- `Specification<T>` — generic interface with `isSatisfiedBy()`, default `and()`, `or()`, `not()` methods
+- Concrete specs: `NameSpecification`, `PhoneSpecification`, `EmailSpecification`, `ContactTypeSpecification`
+- Combined searches: specs can be chained (e.g. `name.and(phone)`, `name.or(email)`)
 
 ### Package Structure
 ```
@@ -53,7 +55,8 @@ src/com/mycontacts/
 ├── viewcontact/     # UC-05: Decorator pattern
 ├── editcontact/     # UC-06: Command + Memento
 ├── deletecontact/   # UC-07: Observer, soft/hard delete
-└── groups/          # UC-08: Composite pattern
+├── groups/          # UC-08: Composite pattern
+└── search/          # UC-09: Specification pattern
 ```
 
 ### How to Run

@@ -23,18 +23,23 @@ A Java console application demonstrating object-oriented design, design patterns
 - **Concepts:** Decorator chaining, display formatting
 
 ## UC-06: Edit Contact
-- **Patterns:** Command (`EditCommand` → `EditNameCommand`, `EditPhoneCommand`, `EditEmailCommand`, `EditNotesCommand`), Memento (`ContactMemento`)
+- **Patterns:** Command + Memento (`EditCommand`, `ContactMemento`, `CommandHistory`)
 - **Concepts:** Undo/redo via dual stacks, full state restore via Memento snapshot
 
 ## UC-07: Delete Contact
 - **Patterns:** Observer (`DeleteObserver` → `DeleteLogger`)
-- **Concepts:** Soft delete (mark as deleted, recoverable) vs Hard delete (permanent removal), confirmation dialog, restore capability
+- **Concepts:** Soft delete vs Hard delete, confirmation, restore capability
 
-### Observer Pattern Details
-- `DeleteObserver` — interface notified on contact deletion with delete type
-- `DeleteLogger` — concrete observer logging deletion events
-- `DeleteService` — manages soft/hard delete and restore, notifies all observers
-- `DeleteContactMenu` — UI with soft delete, hard delete, restore, and view deleted options
+## UC-08: Bulk Operations / Contact Groups
+- **Patterns:** Composite (`ContactComponent` → `ContactLeaf`, `ContactGroup`)
+- **OOP:** Recursive tree structure, uniform treatment of individuals and groups
+- **Concepts:** Bulk soft-delete, sub-groups, recursive contact counting
+
+### Composite Pattern Details
+- `ContactComponent` — interface with `display()`, `getContactCount()`
+- `ContactLeaf` — wraps a single `Contact`
+- `ContactGroup` — composite holding contacts and sub-groups recursively
+- `GroupMenu` — create groups, add/remove contacts, bulk delete, add sub-groups
 
 ### Package Structure
 ```
@@ -47,7 +52,8 @@ src/com/mycontacts/
 ├── contact/         # UC-04: ContactBuilder, ContactFactory
 ├── viewcontact/     # UC-05: Decorator pattern
 ├── editcontact/     # UC-06: Command + Memento
-└── deletecontact/   # UC-07: Observer, soft/hard delete
+├── deletecontact/   # UC-07: Observer, soft/hard delete
+└── groups/          # UC-08: Composite pattern
 ```
 
 ### How to Run

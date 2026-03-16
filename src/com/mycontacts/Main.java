@@ -12,6 +12,7 @@ import com.mycontacts.groups.GroupMenu;
 import com.mycontacts.profile.ProfileMenu;
 import com.mycontacts.registration.RegistrationMenu;
 import com.mycontacts.search.SearchMenu;
+import com.mycontacts.tags.ApplyTagsMenu;
 import com.mycontacts.tags.TagMenu;
 import com.mycontacts.viewcontact.ViewContactMenu;
 
@@ -46,7 +47,8 @@ public class Main {
                 System.out.println("9. Search Contacts");
                 System.out.println("10. Filter & Sort");
                 System.out.println("11. Manage Tags");
-                System.out.println("12. Logout (" + session.getCurrentUser().getName() + ")");
+                System.out.println("12. Apply Tags to Contacts");
+                System.out.println("13. Logout (" + session.getCurrentUser().getName() + ")");
             }
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
@@ -139,6 +141,14 @@ public class Main {
                     yield true;
                 }
                 case "12" -> {
+                    if (session.isLoggedIn()) {
+                        new ApplyTagsMenu(contactRepository, scanner).show();
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    yield true;
+                }
+                case "13" -> {
                     if (session.isLoggedIn()) {
                         System.out.println("Logged out. Bye, " + session.getCurrentUser().getName() + "!");
                         session.logout();

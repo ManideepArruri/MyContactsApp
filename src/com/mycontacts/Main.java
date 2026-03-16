@@ -7,6 +7,7 @@ import com.mycontacts.common.UserRepository;
 import com.mycontacts.contact.CreateContactMenu;
 import com.mycontacts.deletecontact.DeleteContactMenu;
 import com.mycontacts.editcontact.EditContactMenu;
+import com.mycontacts.groups.GroupMenu;
 import com.mycontacts.profile.ProfileMenu;
 import com.mycontacts.registration.RegistrationMenu;
 import com.mycontacts.viewcontact.ViewContactMenu;
@@ -19,6 +20,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         UserRepository userRepository = new UserRepository();
         ContactRepository contactRepository = new ContactRepository();
+        GroupMenu groupMenu = new GroupMenu(contactRepository, scanner);
 
         System.out.println("=============================");
         System.out.println("   Welcome to MyContacts App");
@@ -37,7 +39,8 @@ public class Main {
                 System.out.println("5. View Contacts");
                 System.out.println("6. Edit Contact");
                 System.out.println("7. Delete Contact");
-                System.out.println("8. Logout (" + session.getCurrentUser().getName() + ")");
+                System.out.println("8. Contact Groups");
+                System.out.println("9. Logout (" + session.getCurrentUser().getName() + ")");
             }
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
@@ -98,6 +101,14 @@ public class Main {
                     yield true;
                 }
                 case "8" -> {
+                    if (session.isLoggedIn()) {
+                        groupMenu.show();
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    yield true;
+                }
+                case "9" -> {
                     if (session.isLoggedIn()) {
                         System.out.println("Logged out. Bye, " + session.getCurrentUser().getName() + "!");
                         session.logout();

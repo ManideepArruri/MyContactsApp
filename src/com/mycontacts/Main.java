@@ -7,6 +7,7 @@ import com.mycontacts.common.UserRepository;
 import com.mycontacts.contact.CreateContactMenu;
 import com.mycontacts.profile.ProfileMenu;
 import com.mycontacts.registration.RegistrationMenu;
+import com.mycontacts.viewcontact.ViewContactMenu;
 
 import java.util.Scanner;
 
@@ -31,7 +32,8 @@ public class Main {
             if (session.isLoggedIn()) {
                 System.out.println("3. My Profile");
                 System.out.println("4. Create Contact");
-                System.out.println("5. Logout (" + session.getCurrentUser().getName() + ")");
+                System.out.println("5. View Contacts");
+                System.out.println("6. Logout (" + session.getCurrentUser().getName() + ")");
             }
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
@@ -68,6 +70,14 @@ public class Main {
                     yield true;
                 }
                 case "5" -> {
+                    if (session.isLoggedIn()) {
+                        new ViewContactMenu(contactRepository, scanner).show();
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    yield true;
+                }
+                case "6" -> {
                     if (session.isLoggedIn()) {
                         System.out.println("Logged out. Bye, " + session.getCurrentUser().getName() + "!");
                         session.logout();
